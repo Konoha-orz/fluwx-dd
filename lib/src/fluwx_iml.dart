@@ -248,7 +248,11 @@ Future<bool> authWeChatByPhoneLogin(
       .invokeMethod("authByPhoneLogin", {"scope": scope, "state": state});
 }
 
-/// stop [authWeChatByQRCode]
-Future openCustomerServiceChat() async {
-  return await _channel.invokeMethod("openCustomerServiceChat");
+/// 微信客服
+Future openCustomerServiceChat({
+  @required String corpId,
+  @required String url,
+}) async {
+  return await _channel
+      .invokeMethod("openCustomerServiceChat", {"corpId": corpId, "url": url});
 }

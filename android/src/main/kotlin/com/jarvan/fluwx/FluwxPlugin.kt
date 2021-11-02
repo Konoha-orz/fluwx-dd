@@ -22,7 +22,7 @@ class FluwxPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
 
     companion object {
 
-        var callingChannel:MethodChannel? = null
+        var callingChannel: MethodChannel? = null
 
         @JvmStatic
         fun registerWith(registrar: PluginRegistry.Registrar) {
@@ -66,7 +66,7 @@ class FluwxPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
             call.method == "subscribeMsg" -> subScribeMsg(call, result)
             call.method == "autoDeduct" -> signAutoDeduct(call, result)
             call.method == "openWXApp" -> openWXApp(result)
-            call.method == "openCustomerServiceChat" -> openCustomerServiceChat(call,result)
+            call.method == "openCustomerServiceChat" -> openCustomerServiceChat(call, result)
             call.method.startsWith("share") -> shareHandler?.share(call, result)
             call.method == "isWeChatInstalled" -> WXAPiHandler.checkWeChatInstallation(result)
             else -> result.notImplemented()
@@ -189,12 +189,15 @@ class FluwxPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
         result.success(WXAPiHandler.wxApi?.sendReq(req))
     }
 
+    ///打开微信客服
     private fun openCustomerServiceChat(call: MethodCall, result: MethodChannel.Result) {
         // 判断当前版本是否支持拉起客服会话
-        if (WXAPiHandler.wxApi?.wxAppSupportAPI?: 0 >= Build.SUPPORT_OPEN_CUSTOMER_SERVICE_CHAT) {
-            var req =  WXOpenCustomerServiceChat.Req();
-            req.corpId = "ww7f13cc3ef52db52c";							      // 企业ID
-            req.url = "https://work.weixin.qq.com/kfid/kfc261eb8463e6fde59";	// 客服URL
+        if (WXAPiHandler.wxApi?.wxAppSupportAPI ?: 0 >= Build.SUPPORT_OPEN_CUSTOMER_SERVICE_CHAT) {
+            val corpId = call.argument<String>("corpId")
+            val url = call.argument<String>("url")
+            var req = WXOpenCustomerServiceChat.Req();
+            req.corpId = corpId;                                  // 企业ID
+            req.url = url;    // 客服URL
             WXAPiHandler.wxApi?.sendReq(req)
         }
     }
