@@ -63,7 +63,10 @@ FlutterMethodChannel *channel = nil;
         [self handleSubscribeWithCall:call result:result];
     } else if ([@"autoDeduct" isEqualToString:call.method]) {
         [self handleAutoDeductWithCall:call result:result];
-    }else if([@"authByPhoneLogin" isEqualToString:call.method]){
+    }else if ([@"openCustomerServiceChat" isEqualToString:call.method]) {
+        [self handleOpenCustomerService:call result:result];
+    }
+    else if([@"authByPhoneLogin" isEqualToString:call.method]){
         [_fluwxAuthHandler handleAuthByPhoneLogin:call result:result];
     } else if ([call.method hasPrefix:@"share"]) {
         [_fluwxShareHandler handleShare:call result:result];
@@ -171,6 +174,18 @@ FlutterMethodChannel *channel = nil;
     req.reserved = reserved;
     req.openID = appId;
 
+    [WXApi sendReq:req completion:^(BOOL done) {
+        result(@(done));
+    }];
+}
+
+- (void)handleOpenCustomerService:(FlutterMethodCall *)call result:(FlutterResult)result {
+    NSDictionary *params = call.arguments;
+    NSString *corpid = [params valueForKey:@"corpid"];
+    NSString *url = [params valueForKey:@"url"];
+    WXOpenCustomerServiceReq *req = [[WXOpenCustomerServiceReq alloc] init];
+    req.corpid = corpId;	//企业ID
+    req.url = url;			//客服URL
     [WXApi sendReq:req completion:^(BOOL done) {
         result(@(done));
     }];
