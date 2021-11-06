@@ -181,7 +181,7 @@ FlutterMethodChannel *channel = nil;
 
 - (void)handleOpenCustomerService:(FlutterMethodCall *)call result:(FlutterResult)result {
     NSDictionary *params = call.arguments;
-    NSString *corpid = [params valueForKey:@"corpid"];
+    NSString *corpId = [params valueForKey:@"corpId"];
     NSString *url = [params valueForKey:@"url"];
     WXOpenCustomerServiceReq *req = [[WXOpenCustomerServiceReq alloc] init];
     req.corpid = corpId;	//企业ID

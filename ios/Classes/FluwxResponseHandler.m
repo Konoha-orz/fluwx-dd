@@ -4,7 +4,7 @@
 
 #import <Flutter/Flutter.h>
 #import "FluwxStringUtil.h"
-#import <WechatOpenSDK/WXApiObject.h>
+#import <WechatOpenSDK_Fuck/WXApiObject.h>
 #import "FluwxResponseHandler.h"
 
 @implementation FluwxResponseHandler
@@ -189,6 +189,8 @@ FlutterMethodChannel *fluwxMethodChannel = nil;
         };
 
         [fluwxMethodChannel invokeMethod:@"onWXOpenBusinessWebviewResponse" arguments:result];
+    }else if ([resp isKindOfClass:[WXOpenCustomerServiceResp class]]) {
+        
     }
 }
 
